@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArakGate - AI Scam Detector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans Thai', sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 375px;
+            background: #1e2742;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .screen {
+            background: #1e2742;
+            overflow-y: auto;
+            max-height: 812px;
+        }
+
+        /* Page 1: Dashboard */
+        .dashboard {
+            padding: 20px;
+        }
+
+        .profile-header {
+            background: #2a3351;
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-info h2 {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .section {
+            background: #2a3351;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .call-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .call-item:last-child {
+            border-bottom: none;
+        }
+
+        .call-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .call-icon.safe {
+            background: #22c55e;
+        }
+
+        .call-icon.danger {
+            background: #ef4444;
+        }
+
+        .call-info {
+            flex: 1;
+        }
+
+        .call-info h4 {
+            font-size: 14px;
+            margin-bottom: 3px;
+            color: white;
+        }
+
+        .call-info p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .call-meta {
+            text-align: right;
+        }
+
+        .call-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: white;
+            display: inline-block;
+        }
+
+        .badge.safe {
+            background: #22c55e;
+        }
+
+        .badge.danger {
+            background: #ef4444;
+        }
+
+        .view-all {
+            text-align: center;
+            color: #60a5fa;
+            font-size: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            background: #2a3351;
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        .action-btn .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .action-btn .label {
+            font-size: 13px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .action-btn .sublabel {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 3px;
+        }
+
+        .ai-section {
+            background: #2a3351;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .ai-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .ai-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .ai-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Incoming Call Screen */
+        .incoming-call {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        .caller-info {
+            margin-top: 80px;
+        }
+
+        .caller-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .caller-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .caller-number {
+            font-size: 16px;
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+
+        .call-status {
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        .call-actions {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding-bottom: 40px;
+        }
+
+        .call-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .call-btn.decline {
+            background: #ef4444;
+            color: white;
+        }
+
+        .call-btn.accept {
+            background: #22c55e;
+            color: white;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .arak-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Phone Call Active Screen */
+        .phone-call-active {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .call-active-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .caller-avatar-small {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .caller-name-small {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .call-timer {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 3px;
+        }
+
+        .call-active-content {
+            text-align: center;
+            margin: 80px 0;
+        }
+
+        .call-status-text {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        .call-active-actions {
+            position: absolute;
+            bottom: 40px;
+            left: 20px;
+            right: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .call-action-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            gap: 5px;
+            margin: 0 auto;
+        }
+
+        .call-action-btn.end {
+            background: #ef4444;
+            grid-column: 2;
+        }
+
+        /* Floating Chat Icon */
+        .floating-chat-icon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: move;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+            z-index: 1000;
+            user-select: none;
+            touch-action: none;
+        }
+
+        /* Page 3: AI Scam Detector */
+        .scam-detector {
+            display: none;
+            min-height: 100vh;
+            background: #1e2742;
+        }
+
+        .app-header {
+            background: #2a3351;
+            color: white;
+            padding: 15px 20px;
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .header-top h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .scam-status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 15px;
+            font-size: 13px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            line-height: 1.5;
+        }
+
+        .status-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .status-reason {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 3px;
+        }
+
+        .status-advice {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .chat-container {
+            padding: 20px;
+            /* สำคัญ: ต้องกำหนดความสูง เพื่อให้มันเลื่อนได้ */
+            height: calc(100vh - 180px); 
+            overflow-y: auto; 
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #1e2742;
+        }
+
+        .placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 100px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .message.ai {
+            justify-content: flex-end;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #3b4563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .message-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .message-bubble {
+            max-width: 250px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-bubble {
+            background: #2a3351;
+            color: white;
+            border-radius: 18px;
+            border-top-left-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .message.ai .message-bubble {
+            background: #3b82f6;
+            color: white;
+            border-radius: 18px;
+            border-top-right-radius: 4px;
+        }
+
+        .result-card {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 5px solid #ddd;
+            margin-top: 5px;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .result-card p {
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .input-area {
+            padding: 20px;
+            background: #2a3351;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-area textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            height: 80px;
+            margin-bottom: 10px;
+            background: #1e2742;
+            color: white;
+        }
+
+        .input-area textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-scan {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-scan:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .call-control-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .call-control-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .call-control-btn.end-call {
+            background: #ef4444;
+            color: white;
+        }
+
+        .call-control-btn.accept-call {
+            background: #22c55e;
+            color: white;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-frame">
+        <div class="screen">
+            
+            <!-- Page 1 & 2: Dashboard -->
+            <div class="dashboard" id="dashboardPage">
+                <div class="profile-header">
+                    <div class="profile-top">
+                        <div class="avatar">👤</div>
+                        <div class="profile-info">
+                            <h2>ผู้ใช้งาน RedBet</h2>
+                            <p>+66 81-XXX-XXXX</p>
+                        </div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3>247</h3>
+                            <p>สายโทรทั้งหมด</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>12</h3>
+                            <p>น่าสงสัย</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>98%</h3>
+                            <p>ความแม่นยำ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">
+                        📞 สายล่าสุด
+                    </div>
+                    <div class="call-item">
+                        <div class="call-icon safe">📞</div>
+                        <div class="call-info">
+                            <h4>บริษัท ABC จำกัด</h4>
+                            <p>+66 2-348-0789</p>
+                        </div>
+                        <div class="call-meta">
+                            <div class="call-time">10:30</div>
+                            <span class="badge safe">ปลอดภัย</span>
+                        </div>
+                    </div>
+                    <div class="call-item">
+                        <div class="call-icon danger">📞</div>
+                        <div class="call-info">
+                            <h4>ไม่ระบุชื่อ</h4>
+                            <p>+66 81-234-5678</p>
+                        </div>
+                        <div class="call-meta">
+                            <div class="call-time">09:15</div>
+                            <span class="badge danger">น่าสงสัย</span>
+                        </div>
+                    </div>
+                    <div class="call-item">
+                        <div class="call-icon safe">📞</div>
+                        <div class="call-info">
+                            <h4>ธนาคารกรุงเทพ</h4>
+                            <p>+66 2-907-4545</p>
+                        </div>
+                        <div class="call-meta">
+                            <div class="call-time">เมื่อวาน</div>
+                            <span class="badge safe">ปลอดภัย</span>
+                        </div>
+                    </div>
+                    <div class="view-all">ดูประวัติทั้งหมด ›</div>
+                </div>
+
+                <div class="action-buttons">
+                    <div class="action-btn">
+                        <div class="icon">📞</div>
+                        <div class="label">ประวัติการโทร</div>
+                        <div class="sublabel">ดูสายทั้งหมด</div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="icon">👥</div>
+                        <div class="label">เบอร์ที่รู้จัก</div>
+                        <div class="sublabel">158 รายการ</div>
+                    </div>
+                </div>
+
+                <div class="ai-section">
+                    <div class="ai-title">ทดสอบระบบ AI</div>
+                    <div class="ai-desc">สร้างสถานการณ์จำลองเพื่อทดสอบระบบตรวจจับมิจฉาชีพ<br>คุณจะเป็นผู้หลอกลวง เพื่อทดสอบว่า AI ของเราทำงานได้ดีแค่ไหน</div>
+                    <button class="ai-btn" onclick="showIncomingCall()">📱 Testing</button>
+                </div>
+            </div>
+
+            <!-- Incoming Call Screen -->
+            <div class="incoming-call" id="incomingCallPage">
+                <div class="caller-info">
+                    <div class="caller-avatar">📞</div>
+                    <div class="caller-name">Unknown Number</div>
+                    <div class="caller-number">+66 XX-XXX-XXXX</div>
+                    <div class="call-status">สายเรียกเข้า...</div>
+                    
+                    <button class="arak-btn" onclick="startArakCall()">Arakคุยให้</button>
+                </div>
+
+                <div class="call-actions">
+                    <button class="call-btn decline" onclick="declineCall()">✕</button>
+                    <button class="call-btn accept" onclick="return false;">✓</button>
+                </div>
+            </div>
+
+            <!-- Phone Call Active Screen -->
+            <div class="phone-call-active" id="phoneCallPage">
+                <div class="call-active-header">
+                    <div class="caller-avatar-small">📞</div>
+                    <div>
+                        <div class="caller-name-small">Unknown Number</div>
+                        <div class="call-timer" id="callTimer">00:00</div>
+                    </div>
+                </div>
+
+                <div class="call-active-content">
+                    <div class="call-status-text">กำลังสนทนา...</div>
+                    <div id="micStatus" style="font-size: 12px; color: #4ade80; margin-top: 10px; opacity: 0.7;">
+                        ● AI กำลังฟังอยู่
+                    </div>
+                </div>
+
+                <div class="call-active-actions">
+                    <button class="call-action-btn mute"><span style="font-size: 24px;">🔇</span><span style="font-size: 11px;">ปิดเสียง</span></button>
+                    <button class="call-action-btn speaker"><span style="font-size: 24px;">🔊</span><span style="font-size: 11px;">ลำโพง</span></button>
+                    <button class="call-action-btn"><span style="font-size: 24px;">⌨️</span><span style="font-size: 11px;">แป้นพิมพ์</span></button>
+                    <button class="call-action-btn"><span style="font-size: 24px;">📹</span><span style="font-size: 11px;">วิดีโอ</span></button>
+                    
+                    <button class="call-action-btn end" onclick="endActiveCall()">
+                        <span style="font-size: 24px;">📞</span><span style="font-size: 11px;">วางสาย</span>
+                    </button>
+                    
+                    <button class="call-action-btn"><span style="font-size: 24px;">➕</span><span style="font-size: 11px;">เพิ่มสาย</span></button>
+                </div>
+
+                <div class="floating-chat-icon" id="floatingIcon" onclick="openChatFromCall()">
+                    💬
+                </div>
+            </div>
+                </div>
+
+                <!-- Floating Chat Icon -->
+                <div class="floating-chat-icon" id="floatingIcon" onclick="openChatFromCall()">
+                    💬
+                </div>
+            </div>
+
+            <!-- Page 3: AI Scam Detector -->
+            <div class="scam-detector" id="scamDetectorPage">
+                <div class="app-header">
+                    <div class="header-top">
+                        <button class="back-btn" onclick="showDashboard()" style="position: absolute; left: 15px;">←</button>
+                        <h1>🛡️ AI Scam Detector</h1>
+                    </div>
+                    <div class="scam-status" id="scamStatus">
+                        <div class="status-title">รอการวิเคราะห์...</div>
+                    </div>
+                </div>
+
+                <div class="chat-container" id="resultArea">
+                    <div class="placeholder">
+                        พิมพ์ข้อความหรือวางลิงก์<br>เพื่อตรวจสอบความเสี่ยง
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <textarea id="msgInput" placeholder="เช่น 'โอนเงินมาเดี๋ยวนี้ ไม่งั้นบัญชีโดนอายัด'"></textarea>
+                    <button class="btn-scan" onclick="checkScam()" id="scanBtn">ตรวจสอบ</button>
+                    <div class="call-control-buttons">
+                        <button class="call-control-btn end-call" onclick="endCall()">
+                            📞 วางสาย
+                        </button>
+                        <button class="call-control-btn accept-call" onclick="continueCall()">
+                            ✓ รับสาย
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 1. สร้าง ID ประจำตัวผู้ใช้ (ทำครั้งเดียวตอนโหลดหน้าเว็บ)
+        let mySessionID = 'user_' + Math.random().toString(36).substr(2, 9);
+        
+        let callTimer;
+        let callSeconds = 0;
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        // Draggable floating icon with boundary constraints
+        const floatingIcon = document.getElementById('floatingIcon');
+        const phoneCallPage = document.getElementById('phoneCallPage');
+        
+        if (floatingIcon) {
+            // Initial position
+            floatingIcon.style.right = '20px';
+            floatingIcon.style.top = '50%';
+            
+            floatingIcon.addEventListener('touchstart', dragStart, false);
+            floatingIcon.addEventListener('touchend', dragEnd, false);
+            floatingIcon.addEventListener('touchmove', drag, false);
+            
+            floatingIcon.addEventListener('mousedown', dragStart, false);
+            floatingIcon.addEventListener('mouseup', dragEnd, false);
+            floatingIcon.addEventListener('mousemove', drag, false);
+        }
+
+        function dragStart(e) {
+            // Get icon's current position
+            const rect = floatingIcon.getBoundingClientRect();
+            
+            if (e.type === "touchstart") {
+                initialX = e.touches[0].clientX - rect.left;
+                initialY = e.touches[0].clientY - rect.top;
+            } else {
+                initialX = e.clientX - rect.left;
+                initialY = e.clientY - rect.top;
+            }
+
+            if (e.target === floatingIcon) {
+                isDragging = true;
+            }
+        }
+
+        function dragEnd(e) {
+            isDragging = false;
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                
+                let clientX, clientY;
+                
+                if (e.type === "touchmove") {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+
+                // Get phone screen boundaries
+                const phoneRect = phoneCallPage.getBoundingClientRect();
+                const iconWidth = floatingIcon.offsetWidth;
+                const iconHeight = floatingIcon.offsetHeight;
+
+                // Calculate new position
+                let newX = clientX - initialX - phoneRect.left;
+                let newY = clientY - initialY - phoneRect.top;
+
+                // Constrain to phone screen boundaries
+                newX = Math.max(0, Math.min(newX, phoneRect.width - iconWidth));
+                newY = Math.max(0, Math.min(newY, phoneRect.height - iconHeight));
+
+                floatingIcon.style.left = newX + 'px';
+                floatingIcon.style.top = newY + 'px';
+                floatingIcon.style.right = 'auto';
+            }
+        }
+
+        function showIncomingCall() {
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('incomingCallPage').style.display = 'flex';
+        }
+
+        function declineCall() {
+            document.getElementById('incomingCallPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'block';
+        }
+
+        function startArakCall() {
+            // เริ่มการโทร
+            document.getElementById('incomingCallPage').style.display = 'none';
+            document.getElementById('phoneCallPage').style.display = 'block';
+            
+            // Reset floating icon position
+            floatingIcon.style.right = '20px';
+            floatingIcon.style.left = 'auto';
+            floatingIcon.style.top = '50%';
+            
+            // เริ่มนับเวลา
+            callSeconds = 0;
+            callTimer = setInterval(() => {
+                callSeconds++;
+                const minutes = Math.floor(callSeconds / 60);
+                const seconds = callSeconds % 60;
+                document.getElementById('callTimer').textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function endActiveCall() {
+            clearInterval(callTimer);
+            document.getElementById('phoneCallPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'block';
+        }
+
+        function openChatFromCall() {
+            if (!isDragging) {
+                // Keep call timer running
+                document.getElementById('phoneCallPage').style.display = 'none';
+                document.getElementById('scamDetectorPage').style.display = 'block';
+            }
+        }
+
+        function acceptCall() {
+            document.getElementById('incomingCallPage').style.display = 'none';
+            document.getElementById('scamDetectorPage').style.display = 'block';
+        }
+
+        function showScamDetector() {
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('scamDetectorPage').style.display = 'block';
+        }
+
+        function showDashboard() {
+            // When going back from chat to call
+            if (callTimer) {
+                // Return to phone call page if timer is still running
+                document.getElementById('scamDetectorPage').style.display = 'none';
+                document.getElementById('phoneCallPage').style.display = 'block';
+            } else {
+                // Otherwise go to main dashboard
+                document.getElementById('dashboardPage').style.display = 'block';
+                document.getElementById('scamDetectorPage').style.display = 'none';
+                document.getElementById('resultArea').innerHTML = `
+                    <div class="placeholder">
+                        พิมพ์ข้อความหรือวางลิงก์<br>เพื่อตรวจสอบความเสี่ยง
+                    </div>
+                `;
+                document.getElementById('msgInput').value = '';
+                document.getElementById('scamStatus').innerHTML = '<div class="status-title">รอการวิเคราะห์...</div>';
+            }
+        }
+
+        async function checkScam() {
+            const input = document.getElementById('msgInput');
+            const btn = document.getElementById('scanBtn');
+            const resultArea = document.getElementById('resultArea');
+            const scamStatus = document.getElementById('scamStatus');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            // Clear placeholder if exists
+            if (resultArea.querySelector('.placeholder')) {
+                resultArea.innerHTML = '';
+            }
+
+            // Add user message (left side with avatar)
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerHTML = `
+                <div class="message-avatar">🌐</div>
+                <div class="message-content">
+                    <div class="message-label">ผู้ส่ง</div>
+                    <div class="message-bubble">${text}</div>
+                </div>
+            `;
+            resultArea.appendChild(userMsg);
+
+            // Clear input
+            input.value = '';
+
+            // Scroll to bottom
+            resultArea.scrollTop = resultArea.scrollHeight;
+
+            // 1. เปลี่ยนปุ่มเป็นกำลังโหลด
+            btn.innerText = "กำลังวิเคราะห์...";
+            btn.disabled = true;
+            scamStatus.innerHTML = '<div class="status-title">⏳ กำลังวิเคราะห์...</div>';
+
+            try {
+                // 2. ส่งข้อมูลไปหา Python (Server) พร้อม session_id
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        message: text,
+                        session_id: mySessionID  // ส่ง session_id เพื่อระบุตัวผู้ใช้
+                    })
+                });
+
+                const data = await response.json();
+
+                // 3. Update header status with reason
+                const statusColor = data.is_scam ? '#ef4444' : '#22c55e';
+                const statusEmoji = data.is_scam ? '⚠️' : '✅';
+                const statusText = data.is_scam ? 'อันตราย (Scam)' : 'ปลอดภัย';
+                
+                scamStatus.innerHTML = `
+                    <div class="status-title">${statusEmoji} ${statusText} ${data.risk_score}%</div>
+                    <div class="status-reason">${data.reason}</div>
+                    <div class="status-advice">💡 ${data.advice}</div>
+                `;
+                scamStatus.style.background = statusColor;
+
+                // 4. แสดงผลลัพธ์ (AI reply on right side - will be implemented later)
+                // For now, just show a placeholder or nothing
+
+            } catch (error) {
+                scamStatus.innerHTML = `
+                    <div class="status-title">❌ เกิดข้อผิดพลาด</div>
+                    <div class="status-reason">ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์</div>
+                `;
+                scamStatus.style.background = '#ff9800';
+            }
+
+            // Scroll to bottom
+            resultArea.scrollTop = resultArea.scrollHeight;
+
+            // 5. คืนค่าปุ่ม
+            btn.innerText = "ตรวจสอบ";
+            btn.disabled = false;
+        }
+
+        function endCall() {
+            // วางสายกลับไปหน้าแรก
+            showDashboard();
+        }
+
+        function continueCall() {
+            // รับสาย - ไม่ทำอะไร (just a placeholder)
+            alert('คุณรับสายแล้ว');
+        }
+
+    // ============================================================
+    // 🔧 FINAL UPDATE: แก้ไมค์ดับ + กรองเสียง + พูดตอบโต้ + แชทเลื่อน
+    // ============================================================
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    let isMicActive = false;
+
+    // ตั้งค่า Recognition
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'th-TH';
+        // ⚠️ สำคัญ: ใช้ false เพื่อคุมการ Restart เอง (เสถียรกว่า true มากใน Chrome)
+        recognition.continuous = false; 
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            console.log("🟢 Microphone Started");
+        };
+
+        recognition.onend = () => {
+            console.log("🔴 Microphone Stopped");
+            // 🔥 Auto-Restart Logic: ถ้ายังไม่วางสาย ให้เปิดไมค์ใหม่ทันที
+            if (isMicActive) {
+                console.log("🔄 Auto-restarting Mic...");
+                try { recognition.start(); } catch(e) {}
+            }
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            
+            // 🔥 Noise Filter: กรองเสียงสั้นๆ/เสียงลม (น้อยกว่า 5 ตัวอักษร) ทิ้งไป
+            if (transcript.length < 5) {
+                console.log("🗑️ Ignored noise:", transcript);
+                return; 
+            }
+
+            console.log("🗣️ User said:", transcript);
+            analyzeVoiceData(transcript);
+        };
+        
+        recognition.onerror = (event) => {
+            console.warn("⚠️ Mic Error:", event.error);
+            // ถ้า Error แบบไม่มีเสียง ให้ปล่อยผ่านแล้วมันจะ Restart เองที่ onend
+        };
+    }
+
+    // ฟังก์ชันเริ่มโทร (Start Call) - แก้ไขให้เปิดไมค์
+    if (typeof window.originalStartCall === 'undefined') window.originalStartCall = startArakCall;
+    startArakCall = function() {
+        window.originalStartCall();
+        if (recognition && !isMicActive) {
+            isMicActive = true;
+            try { recognition.start(); } catch(e){}
+        }
+        const icon = document.getElementById('floatingIcon');
+        if(icon) { icon.style.backgroundColor = '#3b82f6'; icon.innerText = '💬'; }
+    }
+
+    // ฟังก์ชันวางสาย (End Call) - แก้ไขให้ปิดไมค์และล้างค่า
+    if (typeof window.originalEndCall === 'undefined') window.originalEndCall = endActiveCall;
+    endActiveCall = function() {
+        window.originalEndCall();
+        
+        // สั่งปิดสวิตช์ไมค์
+        isMicActive = false; 
+        if (recognition) recognition.stop();
+        
+        // หยุดเสียงพูด AI (ถ้ามี)
+        window.speechSynthesis.cancel();
+        
+        // ล้างแชท
+        const resultArea = document.getElementById('resultArea');
+        if (resultArea) resultArea.innerHTML = '<div class="placeholder">ประวัติถูกล้างแล้ว</div>';
+        
+        // รีเซ็ต Session ID
+        mySessionID = 'user_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // ฟังก์ชันวิเคราะห์เสียงและแสดงผล (Core Logic)
+    async function analyzeVoiceData(text) {
+        const resultArea = document.getElementById('resultArea');
+        if (!resultArea) return;
+
+        if (resultArea.querySelector('.placeholder')) resultArea.innerHTML = '';
+
+        // 1. แสดงข้อความฝั่งคู่สนทนา
+        const userMsg = document.createElement('div');
+        userMsg.className = 'message user';
+        userMsg.innerHTML = `
+            <div class="message-avatar">📞</div>
+            <div class="message-content">
+                <div class="message-label">คู่สนทนา</div>
+                <div class="message-bubble">${text}</div>
+            </div>`;
+        resultArea.appendChild(userMsg);
+        scrollToBottom(); // เลื่อนจอ
+
+        try {
+            // 2. ส่งไป AI
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, session_id: mySessionID })
+            });
+            const data = await response.json();
+
+            // 3. แสดงผล AI ตอบกลับ
+            const statusColor = data.is_scam ? '#ef4444' : '#22c55e';
+            const aiReplyText = data.reply || data.advice; // เอาคำตอบมาใช้
+
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'message ai';
+            aiMsg.innerHTML = `
+                <div class="message-content" style="align-items: flex-end;">
+                    <div class="message-label">แนะนำให้ตอบว่า</div>
+                    <div class="message-bubble" style="background: ${statusColor};">
+                        ${aiReplyText}
+                    </div>
+                </div>
+                <div class="message-avatar">🤖</div>`;
+            resultArea.appendChild(aiMsg);
+            
+            // อัปเดต Status Bar
+            const scamStatus = document.getElementById('scamStatus');
+            if(scamStatus) {
+                scamStatus.innerHTML = `<div class="status-title">${data.is_scam ? '⚠️ อันตราย' : '✅ ปลอดภัย'} (${data.risk_score}%)</div>`;
+                scamStatus.style.background = statusColor;
+            }
+
+            // แจ้งเตือนปุ่มแดง
+            if (data.is_scam) {
+                const icon = document.getElementById('floatingIcon');
+                if(icon) { icon.style.backgroundColor = '#ef4444'; icon.innerText = '⚠️'; }
+            }
+
+            scrollToBottom(); // เลื่อนจอ
+            speak(aiReplyText); // พูดเสียงออกมา
+
+        } catch (err) { console.error(err); }
+    }
+
+    // ฟังก์ชันช่วยเลื่อนจอลงล่างสุด
+    function scrollToBottom() {
+        const resultArea = document.getElementById('resultArea');
+        if(resultArea) {
+            resultArea.scrollTop = resultArea.scrollHeight;
+        }
+    }
+
+    // ฟังก์ชันพูด (TTS)
+    function speak(text) {
+        if (!text) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'th-TH';
+        utterance.rate = 1.1; // พูดเร็วขึ้นนิดนึง
+        
+        // พยายามเลือกเสียงไทย
+        const voices = window.speechSynthesis.getVoices();
+        const thaiVoice = voices.find(v => v.lang.includes('th'));
+        if (thaiVoice) utterance.voice = thaiVoice;
+
+        window.speechSynthesis.speak(utterance);
+    }
+    </script>
+
+</body>
+</html>
