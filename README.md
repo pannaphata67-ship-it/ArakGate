@@ -1,6 +1,8 @@
 # ArakGate
 
 คู่มือใช้งาน
+![image alt](https://github.com/pannaphata67-ship-it/ArakGate/blob/ba3d547975813da0115ce16256475b807bf662e0/HowToUse.png)
+
 1. หน้า Dashboard (หน้าหลัก)
 หน้านี้แสดงสถิติรวม (จำลอง)
 
