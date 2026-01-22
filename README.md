@@ -44,11 +44,7 @@
 
 ติดตั้ง Library ที่จำเป็น เปิด Terminal หรือ Command Prompt แล้วพิมพ์คำสั่ง:  pip install flask flask-cors python-dotenv google-generativeai
 
-ตั้งค่า API Key  สร้างไฟล์ชื่อ .env ไว้ในโฟลเดอร์เดียวกับ server.py
-
-ใส่โค้ดนี้ลงไป (แทนที่ YOUR_API_KEY ด้วยคีย์ของคุณ): GEMINI_API_KEY=YOUR_API_KEY_HERE
-
-เริ่มรันเซิร์ฟเวอร์ พิมพ์คำสั่ง: python server.py
+ติดตั้งโมเดล llama v 3.1
 
 เปิดใช้งาน
 เปิด Google Chrome
