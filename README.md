@@ -44,7 +44,7 @@
 
 ติดตั้ง Library ที่จำเป็น เปิด Terminal หรือ Command Prompt แล้วพิมพ์คำสั่ง:  pip install flask flask-cors python-dotenv google-generativeai
 
-ติดตั้งโมเดล llama v 3.1
+ติดตั้งโมเดล llama v 3.1 ไว้ใน โฟลเดอร์ env
 
 เปิดใช้งาน
 เปิด Google Chrome
